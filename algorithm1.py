@@ -11,10 +11,10 @@ def algorithm1(a_location,b_location,c_location,d_location):
 #x1'den başlayan drone için...
     lat5=(c_location.lat+d_location.lat)/2
     lon5=(c_location.lon+d_location.lon)/2
-    e_location=LocationGlobalRelative(lat5,lon5,7)
-    lat6=(a_location.alt+b_location.lat)/2
-    lon6=(d_location.alt+d_location.alt)/2
-    f_location=LocationGlobalRelative(lat = lat6,lon = lon6,alt = 7)
+    e_location=LocationGlobalRelative(lat5,lon5,7.0)
+    lat6=(a_location.lat+b_location.lat)/2
+    lon6=(a_location.lon+b_location.lon)/2
+    f_location=LocationGlobalRelative(lat6,lon6,7.0)
     x_location = a_location
     y_location = b_location
 
@@ -23,25 +23,29 @@ def algorithm1(a_location,b_location,c_location,d_location):
     m_location = e_location
     counter=0
     aralarindakiUzaklik = haversine(k_location.lat,k_location.lon,m_location.lat,m_location.lon)
-    while aralarindakiUzaklik < 0.001:
+    while aralarindakiUzaklik > 0.001:
         aralarindakiUzaklik = haversine(k_location.lat,k_location.lon,m_location.lat,m_location.lon)
         counter+=1
-        m_location=((k_location.alt+m_location.alt)/2,(k_location.lon+m_location.lon)/2,7)
+        m_location=((k_location.lat+m_location.lat)/2,(k_location.lon+m_location.lon)/2,7.0)
         print(aralarindakiUzaklik)
-    tekrarSayisi = int(math.pow(2,counter))
-
+    tekrarSayisi = float(math.pow(2,counter))
+    print ("tekrar sayisi:",tekrarSayisi)
 #koordinat değişikliği için değişken hesaplaması
-    kooordinatDegisikligi = LocationGlobalRelative(((c_location.alt+d_location.alt)/tekrarSayisi),((c_location.lon+d_location.lon)/tekrarSayisi),7)
-    for i in range(tekrarSayisi):
+    kooordinatDegisikligi = LocationGlobalRelative(((c_location.lat+e_location.lat)/tekrarSayisi),((c_location.lon+e_location.lon)/tekrarSayisi),7.0)
+    print(kooordinatDegisikligi)
+    for i in range(int(tekrarSayisi)):
         #push here
         rotasyonBilgisi.append(y_location)
-        y_location=LocationGlobalRelative(y_location.alt+kooordinatDegisikligi.alt,y_location.lon+kooordinatDegisikligi.lon,7)
+        print("diziye ekleniyor ",y_location)
+        y_location=LocationGlobalRelative(y_location.lat+kooordinatDegisikligi.lat,y_location.lon+kooordinatDegisikligi.lon,7.0)
         #push here
         rotasyonBilgisi.append(y_location)
-        simdikiLocation=LocationGlobalRelative(y_location.alt+kooordinatDegisikligi.alt,y_location.lon+kooordinatDegisikligi.lon,7)
-        y_location = LocationGlobalRelative(x_location.alt+kooordinatDegisikligi.alt,x_location.lon+kooordinatDegisikligi.lon,7)
+        print("diziye ekleniyor ",y_location)
+        simdikiLocation = y_location
+        #simdikiLocation = LocationGlobalRelative(y_location.lat+kooordinatDegisikligi.lat,y_location.lon+kooordinatDegisikligi.lon,7.0)
+        y_location = LocationGlobalRelative(x_location.lat+kooordinatDegisikligi.lat,x_location.lon+kooordinatDegisikligi.lon,7.0)
         x_location = simdikiLocation
     
-    y_location = LocationGlobalRelative((e_location.alt+f_location.alt)/2,(e_location.lon+f_location.lon)/2,7)
+    y_location = LocationGlobalRelative((e_location.lat+f_location.lat)/2,(e_location.lon+f_location.lon)/2,7.0)
     rotasyonBilgisi.append(y_location)
     return rotasyonBilgisi
