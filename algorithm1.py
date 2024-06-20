@@ -31,7 +31,7 @@ def algorithm1(a_location,b_location,c_location,d_location):
     tekrarSayisi = int(math.pow(2,counter))
 
 #koordinat değişikliği için değişken hesaplaması
-    kooordinatDegisikligi = LocationGlobalRelative((((c_location.alt+d_location.alt)*(tekrarSayisi+1))/tekrarSayisi),(((c_location.lon+d_location.lon)*(tekrarSayisi+1))/tekrarSayisi),7)
+    kooordinatDegisikligi = LocationGlobalRelative(((c_location.alt+d_location.alt)/tekrarSayisi),((c_location.lon+d_location.lon)/tekrarSayisi),7)
     for i in range(tekrarSayisi):
         #push here
         rotasyonBilgisi.append(y_location)
