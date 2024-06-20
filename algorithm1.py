@@ -22,16 +22,18 @@ def algorithm1(a_location,b_location,c_location,d_location):
     k_location = c_location
     m_location = e_location
     counter=0
-    aralarindakiUzaklik = haversine(k_location.lat,k_location.lon,m_location.lat,m_location.lon)
+    aralarindakiUzaklik = aralarindakiUzaklik = haversine(k_location.lat,k_location.lon,m_location.lat,m_location.lon)
     while aralarindakiUzaklik > 0.001:
         aralarindakiUzaklik = haversine(k_location.lat,k_location.lon,m_location.lat,m_location.lon)
+        print("Aralarindaki uzaklik",aralarindakiUzaklik)
         counter+=1
-        m_location=((k_location.lat+m_location.lat)/2,(k_location.lon+m_location.lon)/2,7.0)
+        m_location=LocationGlobalRelative((k_location.lat+m_location.lat)/2,(k_location.lon+m_location.lon)/2,7.0)
         print(aralarindakiUzaklik)
     tekrarSayisi = float(math.pow(2,counter))
     print ("tekrar sayisi:",tekrarSayisi)
 #koordinat değişikliği için değişken hesaplaması
-    kooordinatDegisikligi = LocationGlobalRelative(((c_location.lat+e_location.lat)/tekrarSayisi),((c_location.lon+e_location.lon)/tekrarSayisi),7.0)
+#new_location = c_location +(tekrarSayisi-1)*
+    kooordinatDegisikligi = LocationGlobalRelative(((e_location.lat-c_location.lat)/tekrarSayisi),((e_location.lon-c_location.lon)/tekrarSayisi),7.0)
     print(kooordinatDegisikligi)
     for i in range(int(tekrarSayisi)):
         #push here
