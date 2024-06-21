@@ -31,20 +31,15 @@ def algorithm1(a_location,b_location,c_location,d_location):
     #0.001 sayısı KM cinsinden gezilecek en yakın 2 nokta arasındaki uzaklığı temsil etmektedir ve değiştirilebilir
     while aralarindakiUzaklik > 0.01:
         aralarindakiUzaklik = haversine(k_location.lat,k_location.lon,m_location.lat,m_location.lon)
-        print("Aralarindaki uzaklik",aralarindakiUzaklik)
         counter+=1
         m_location=LocationGlobalRelative((k_location.lat+m_location.lat)/2,(k_location.lon+m_location.lon)/2,7.0)
         #k noktası ve temsil edilecek olan yeni m noktası arasındaki mesafe 0.001 km olasıya kadar 2ye böl ve sayacı bir arttır. 
-        print(aralarindakiUzaklik)
     tekrarSayisi = float(math.pow(2,counter))
     #Yatay dönüş sayısını hesaplar
-    print ("tekrar sayisi:",tekrarSayisi)
 
     #her bir en kısa yatay ya da dikey dönüş için hesaplanılan koordinatın değişikliği 
     kooordinatDegisikligi = LocationGlobalRelative(((e_location.lat-b_location.lat)/tekrarSayisi),((e_location.lon-b_location.lon)/tekrarSayisi),7.0)
-    print(kooordinatDegisikligi)
     for i in range(int(tekrarSayisi)):
-        print(i)
         rotasyonBilgisi.append(y_location)
         y_location=LocationGlobalRelative(y_location.lat+kooordinatDegisikligi.lat,y_location.lon+kooordinatDegisikligi.lon,7.0)
         rotasyonBilgisi.append(y_location)
