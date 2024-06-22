@@ -24,24 +24,23 @@ while True:
         break
     time.sleep(1)
 
-#x1'den başlayan drone için...
-lat1=drone1.location.global_relative_frame.lat
-lon1=drone1.location.global_relative_frame.lon
-a_location = drone1.location.global_relative_frame
-# a noktasi : lat = -35.3632622 , lon = 149.1652375
-# b noktasi : lat = -35.363331 , lon = 149.162973
-# c noktasi : lat = -35.361164 , lon = 149.165163
-# d noktasi : lat = -35.361815 , lon = 149.162960
+# a noktasi : lat = -35.36355044, lon = 149.16398570
+# b noktasi : lat = -35.36355044, lon = 149.16178626
+# c noktasi : lat = -35.36175679 , lon = 149.16398570
+# d noktasi : lat = -35.36176165 , lon = 149.16178626
 
 print("koordinatlar giriliyor...")
-lat2 = -35.36252942
-lon2 = 149.16515878
+lat1 = -35.36355044
+lon1 = 149.16398570
+a_location = LocationGlobalRelative(lat1,lon1,7.0)
+lat2 = -35.36355044
+lon2 = 149.16178626
 b_location = LocationGlobalRelative(lat2,lon2,7.0)
-lat3=-35.36325288
-lon3=149.164005008
+lat3=-35.36175679
+lon3=149.16398570
 c_location=LocationGlobalRelative(lat3,lon3,7.0)
-lat4=-35.36252942
-lon4=149.164005008
+lat4=-35.36176165
+lon4=149.16178626
 d_location = LocationGlobalRelative(lat4,lon4,7.0)
 
 print(a_location)
@@ -49,12 +48,10 @@ print(b_location)
 print(c_location)
 print(d_location)
 #we are assuming the vehicle is on a_location
+
+cmd.add(Command(0,0,0,mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT, mavutil.mavlink.MAV_CMD_NAV_WAYPOINT,0,0,1,0,0,0,a_location.lat,a_location.lon,7))
+cmd.add(Command(0,0,0,mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT, mavutil.mavlink.MAV_CMD_NAV_WAYPOINT,0,0,1,0,0,0,a_location.lat,a_location.lon,7))
 listOfRotation = algorithm1(a_location,b_location,c_location,d_location)
-y_location = listOfRotation[0]
-
-cmd.clear()
-
-cmd.add(Command(0,0,0,mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT, mavutil.mavlink.MAV_CMD_NAV_WAYPOINT,0,0,1,0,0,0,y_location.lat,y_location.lon,7))
 for i in range(len(listOfRotation)):
     y_location = listOfRotation[i]
     cmd.add(Command(0,0,0,mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT, mavutil.mavlink.MAV_CMD_NAV_WAYPOINT,0,0,1,0,0,0,y_location.lat,y_location.lon,7))
