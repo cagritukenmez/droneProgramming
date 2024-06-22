@@ -5,8 +5,6 @@ from dronekit import connect, LocationGlobalRelative, Command
 from pymavlink import mavutil
 from algorithm import algorithm1
 
-#konum bilgileri giriliyor.
-
 drone1 = connect('127.0.0.1:14550', wait_ready= True)
 cmd = drone1.commands
 print("baglandi")
