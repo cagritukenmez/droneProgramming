@@ -3,7 +3,7 @@ import time
 
 from dronekit import connect, LocationGlobalRelative, Command
 from pymavlink import mavutil
-from hesaplama import algorithm1
+from algorithm import algorithm1
 
 #konum bilgileri giriliyor.
 
