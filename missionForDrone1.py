@@ -15,6 +15,8 @@ while drone1.is_armable is not True:
 drone1.mode = "GUIDED"
 drone1.armed = True
 print("motorlar armlandı...")
+drone1.home_location=drone1.location.global_frame
+
 drone1.simple_takeoff(7)
 
 while True:
@@ -24,7 +26,6 @@ while True:
         break
     time.sleep(1)
 
-drone1.home_location=drone1.location.global_frame
 #x1'den başlayan drone için...
 lat1=drone1.location.global_relative_frame.lat
 lon1=drone1.location.global_relative_frame.lon
@@ -44,6 +45,7 @@ c_location=LocationGlobalRelative(lat3,lon3,7.0)
 lat4=-35.36252942
 lon4=149.164005008
 d_location = LocationGlobalRelative(lat4,lon4,7.0)
+
 print(a_location)
 print(b_location)
 print(c_location)
@@ -51,12 +53,15 @@ print(d_location)
 #we are assuming the vehicle is on a_location
 listOfRotation = algorithm1(a_location,b_location,c_location,d_location)
 y_location = listOfRotation[0]
+
+cmd.clear()
+
 cmd.add(Command(0,0,0,mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT, mavutil.mavlink.MAV_CMD_NAV_WAYPOINT,0,0,1,0,0,0,y_location.lat,y_location.lon,7))
 for i in range(len(listOfRotation)):
     y_location = listOfRotation[i]
     cmd.add(Command(0,0,0,mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT, mavutil.mavlink.MAV_CMD_NAV_WAYPOINT,0,0,1,0,0,0,y_location.lat,y_location.lon,7))
-
-cmd.add(Command(0,0,0,mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT, mavutil.mavlink.MAV_CMD_NAV_RETURN_TO_LAUNCH,0,0,1,0,0,0,y_location.lat,y_location.lon,7))
+cmd.add(Command(0,0,0,mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT, mavutil.mavlink.MAV_CMD_NAV_RETURN_TO_LAUNCH,0,0,1,0,0,0,0,0,0))
+drone1.parameters['RTL_ALT'] = 7
 
 cmd.upload()
 
@@ -76,12 +81,13 @@ while True:
         break
     time.sleep(3)
 
-# Drone'un iniş yapmasını ve motorları kapatmasını sağlamak için LOITER veya LAND modunu kullanabilirsiniz
-drone1.mode = "LAND"
+print("RTL komutu gönderildi. Başlangıç noktasına dönülüyor.")
+
 while drone1.armed:
-    print("İniş yapılıyor...")
+    print("Dönüş yapılıyor...")
     time.sleep(1)
 
 print("Görev tamamlandı ve drone güvenli şekilde iniş yaptı.")
+cmd.clear()
 drone1.close()
 
